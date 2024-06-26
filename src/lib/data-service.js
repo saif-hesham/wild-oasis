@@ -1,5 +1,6 @@
 import { eachDayOfInterval } from 'date-fns';
-import  supabase  from './supabase';
+import supabase from './supabase';
+import { notFound } from 'next/navigation';
 
 /////////////
 // GET
@@ -16,6 +17,7 @@ export async function getCabinById(id) {
 
   if (error) {
     console.error(error);
+    notFound();
   }
 
   return data;
@@ -34,6 +36,19 @@ export async function getCabinPrice(id) {
 
   return data;
 }
+
+export const getCabinsCount = async function () {
+  const { count, error } = await supabase
+    .from('cabins')
+    .select('id', { count: 'exact', head: true });
+
+  if (error) {
+    console.error(error);
+    throw new Error('Could not get the count of cabins');
+  }
+
+  return count;
+};
 
 export const getCabins = async function () {
   const { data, error } = await supabase
@@ -113,7 +128,7 @@ export async function getBookedDatesByCabinId(cabinId) {
 
   // Converting to actual dates to be displayed in the date picker
   const bookedDates = data
-    .map((booking) => {
+    .map(booking => {
       return eachDayOfInterval({
         start: new Date(booking.startDate),
         end: new Date(booking.endDate),
