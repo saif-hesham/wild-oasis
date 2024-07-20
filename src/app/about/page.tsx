@@ -1,10 +1,8 @@
-import React from 'react';
+import { getCabinsCount } from '@/lib/data-service';
 import { Metadata } from 'next';
-import img1 from '../../../public/about-1.jpg';
-import img2 from '../../../public/about-2.jpg';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getCabinsCount } from '@/lib/data-service';
+import img1 from '../../../public/about-1.jpg';
 
 export const revalidate = 86400;
 
